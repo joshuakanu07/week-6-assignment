@@ -1,0 +1,39 @@
+import unittest
+from grading import calculate_grade, calculate_grade_point
+class TestGrading(unittest.TestCase):
+    def test_grade_a_boundary(self):
+        self.assertEqual(calculate_grade(70), "A")
+    def test_grade_b_boundary(self):
+        self.assertEqual(calculate_grade(60), "B")
+    def test_all_grade_transitions(self):
+        expected = {
+            39: "F",
+            40: "E",
+            44: "E",
+            45: "D",
+            49: "D",
+            50: "C",
+            59: "C",
+            60: "B",
+            69: "B",
+            70: "A",
+            100: "A"
+        }
+        for score, grade in expected.items():
+            with self.subTest(score=score):
+                self.assertEqual(calculate_grade(score), grade)
+    def test_grade_point(self):
+        self.assertEqual(calculate_grade_point(70), 5)
+        self.assertEqual(calculate_grade_point(45), 2)
+        self.assertEqual(calculate_grade_point(0), 0)
+    def test_invalid_high_score(self):
+        with self.assertRaises(ValueError):
+            calculate_grade(101)
+    def test_invalid_low_score(self):
+        with self.assertRaises(ValueError):
+            calculate_grade(-1)
+    def test_non_numeric_score(self):
+        with self.assertRaises(TypeError):
+            calculate_grade("70")
+if __name__ == "_main_":
+    unittest.main()
